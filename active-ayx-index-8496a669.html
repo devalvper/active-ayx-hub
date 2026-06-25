@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>ayx · 稳定入口与界面说明</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f6f7f9;
+            line-height: 1.7;
+            color: #1e2632;
+        }
+
+        /* 深色头图 */
+        .hero {
+            background: linear-gradient(120deg, #0f141c 0%, #1b232f 60%, #1f2a3a 100%);
+            color: #e9ecf0;
+            padding: 4rem 1.5rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3.5rem;
+            background: #f6f7f9;
+            clip-path: ellipse(70% 100% at 50% 100%);
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 450;
+            letter-spacing: 0.02rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 680px;
+            margin: 0.75rem auto 0;
+            opacity: 0.82;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .hero .sub-highlight {
+            color: #6c9aff;
+            font-weight: 400;
+        }
+
+        /* 浅色正文区 */
+        .container {
+            max-width: 880px;
+            margin: -1.5rem auto 3rem;
+            padding: 0 1.8rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 2.8rem 2.8rem 3.2rem;
+            box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+        }
+
+        /* 承接段落 */
+        .lead {
+            font-size: 1.08rem;
+            color: #2c3542;
+            border-left: 4px solid #6c9aff;
+            padding-left: 1.3rem;
+            margin-bottom: 2.2rem;
+            font-weight: 420;
+        }
+
+        .lead a {
+            color: #2b5ed9;
+            text-decoration: none;
+            border-bottom: 1px solid #b3c9ff;
+            transition: border 0.2s, color 0.2s;
+        }
+
+        .lead a:hover {
+            color: #0f317a;
+            border-bottom-color: #2b5ed9;
+        }
+
+        /* 特点列表 */
+        .feature-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            margin: 2.2rem 0 2.4rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.9rem;
+            padding: 0.9rem 1.2rem;
+            background: #f4f7fd;
+            border-radius: 16px;
+            transition: background 0.2s;
+        }
+
+        .feature-item:hover {
+            background: #e9eff9;
+        }
+
+        .feature-marker {
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            background: #6c9aff;
+            border-radius: 2px;
+            margin-top: 0.6rem;
+        }
+
+        .feature-text strong {
+            font-weight: 560;
+            color: #17202c;
+            display: inline-block;
+            min-width: 4.2rem;
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            color: #2f3a4b;
+        }
+
+        /* 场景 / 提示区 (用温和叙述) */
+        .scene-note {
+            background: #f0f4fe;
+            border-radius: 18px;
+            padding: 1.8rem 2rem;
+            margin: 2.2rem 0;
+            border: 1px solid #dce5f5;
+        }
+
+        .scene-note h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #14223a;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .scene-note p {
+            font-size: 0.95rem;
+            color: #283343;
+            margin-bottom: 0.6rem;
+            line-height: 1.7;
+        }
+
+        .scene-note p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* FAQ 摘要（简洁） */
+        .faq-mini {
+            border-top: 1px solid #e2e7ef;
+            padding-top: 1.8rem;
+            margin-top: 1.8rem;
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.6rem;
+            border-radius: 12px;
+            background: #fafbfd;
+            padding: 0.4rem 1rem;
+            transition: background 0.15s;
+        }
+
+        .faq-mini details[open] {
+            background: #f0f5ff;
+        }
+
+        .faq-mini summary {
+            font-weight: 470;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.1rem;
+            cursor: pointer;
+            color: #1b2a41;
+        }
+
+        .faq-mini summary::-webkit-details-marker {
+            color: #6c9aff;
+        }
+
+        .faq-mini p {
+            font-size: 0.9rem;
+            color: #30415a;
+            padding: 0.3rem 0.2rem 0.7rem;
+        }
+
+        /* 温和结尾 */
+        .gentle-footer {
+            text-align: center;
+            margin-top: 2.8rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e8ecf3;
+        }
+
+        .gentle-footer .ending {
+            font-size: 0.97rem;
+            color: #34465c;
+            background: #f2f6fe;
+            display: inline-block;
+            padding: 0.4rem 1.8rem;
+            border-radius: 50px;
+            border: 1px solid #d7e1f2;
+            letter-spacing: 0.02rem;
+        }
+
+        .gentle-footer .ending a {
+            color: #2b5ed9;
+            text-decoration: none;
+            font-weight: 460;
+            border-bottom: 1px solid #b3c9ff;
+        }
+
+        .gentle-footer .ending a:hover {
+            color: #0f317a;
+            border-bottom-color: #2b5ed9;
+        }
+
+        .meta-note {
+            margin-top: 1rem;
+            font-size: 0.82rem;
+            color: #69788b;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .hero {
+                padding: 3.2rem 1rem 4.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .content-card {
+                padding: 2rem 1.2rem 2.4rem;
+                border-radius: 20px;
+            }
+
+            .feature-item {
+                padding: 0.8rem 0.9rem;
+                flex-wrap: wrap;
+            }
+
+            .scene-note {
+                padding: 1.2rem 1.2rem;
+            }
+
+            .faq-mini details {
+                padding: 0.2rem 0.8rem;
+            }
+
+            .gentle-footer .ending {
+                padding: 0.3rem 1.2rem;
+                font-size: 0.88rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.65rem;
+            }
+
+            .lead {
+                font-size: 0.95rem;
+                padding-left: 1rem;
+            }
+
+            .feature-text strong {
+                min-width: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <h1>ayx · 稳定入口</h1>
+    <p>从界面结构到操作路径，保持一致、克制的呈现。<br>这里是一份关于 <span class="sub-highlight">ayx</span> 页面构成与使用场景的简明说明。</p>
+</header>
+
+<main class="container">
+    <div class="content-card">
+        <!-- 开场短句 + 承接段落 -->
+        <div class="lead">
+            作为<a href="https://active-ayx.com.cn">ayx</a>的初始介绍页，我们不追求喧哗的视觉刺激，而是将重点放在：<br>如何通过清晰的模块布局与稳定的导航，让访客在三分钟内理解站点功能与内容边界。
+        </div>
+
+        <!-- 特点列表 -->
+        <div class="feature-grid">
+            <div class="feature-item">
+                <span class="feature-marker"></span>
+                <div class="feature-text"><strong>层级明确</strong> —— 页面标题、区域、功能入口有统一间距与字号梯度，降低视觉噪声。</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-marker"></span>
+                <div class="feature-text"><strong>信息密度适中</strong> —— 每个区块承载 3～5 个要点，段落长度不超过 6 行，兼顾扫读与精读。</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-marker"></span>
+                <div class="feature-text"><strong>交互反馈克制</strong> —— 链接、按钮仅在悬停时改变颜色与下划线状态，避免多余动效干扰。</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-marker"></span>
+                <div class="feature-text"><strong>内容优先</strong> —— 深色头图与浅色正文形成自然分区，不依赖大图或装饰元素。</div>
+            </div>
+        </div>
+
+        <!-- 场景 / 提示区（更偏向 如何利用页面 ） -->
+        <div class="scene-note">
+            <h3>▸ 关于页面使用场景</h3>
+            <p>当你是第一次了解 <a href="https://active-ayx.com.cn" style="color:#2b5ed9;text-decoration:underline;">ayx</a>，建议先阅读「承接段落」锁定整体定位，再浏览特点列表形成功能预期。FAQ 摘要则回答了几条常见疑问。</p>
+            <p>对于需要快速找到某个功能模块的用户，本页不堆叠长列表，而是聚焦于描述界面组织的核心理念，帮助你在进入具体页面时更快适应信息结构。</p>
+            <p>所有链接均指向 <strong>ayx</strong> 的主站域名，路径直接，无中间跳转。</p>
+        </div>
+
+        <!-- FAQ 摘要 -->
+        <div class="faq-mini">
+            <details>
+                <summary>ayx 页面是否适配移动设备？</summary>
+                <p>本介绍页已采用响应式设计，头图、卡片、列表均根据视口宽度调整间距与字号。主站 <a href="https://active-ayx.com.cn" style="color:#2b5ed9;">ayx</a> 同样在手机端保持可用布局。</p>
+            </details>
+            <details>
+                <summary>为什么强调「稳定入口」？</summary>
+                <p>入口的稳定意味着 url 结构、导航菜单、核心操作区域不随意变动。本页正是这种设计原则的说明性示例。</p>
+            </details>
+            <details>
+                <summary>页面内容更新频率如何？</summary>
+                <p>介绍页随功能迭代适度修订，但不会频繁更改基础框架。详细更新日志可关注主站 <a href="https://active-ayx.com.cn" style="color:#2b5ed9;">ayx</a> 的 changelog 模块。</p>
+            </details>
+        </div>
+
+        <!-- 温和结尾 -->
+        <div class="gentle-footer">
+            <div class="ending">
+                ← 回到 <a href="https://active-ayx.com.cn">ayx</a> · 简洁与稳定是长期的原则
+            </div>
+            <div class="meta-note">
+                页面方向 · 故事叙述式 / 深色头图 浅色正文<br>
+                版本说明 · 结构清晰，不赘余
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
